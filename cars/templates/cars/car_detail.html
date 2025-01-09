@@ -1,9 +1,17 @@
 {% extends 'cars/base.html' %}
 
 {% block content %}
-<h1>{{ car.make }} {{ car.model }} ({{ car.year }})</h1>
+<h1>{{ car.make }} {{ car.model }} ({{ car.year|default:"Год не указан" }})</h1>
 <p>{{ car.description }}</p>
 <p>Добавлено: {{ car.created_at }} пользователем {{ car.owner.username }}</p>
+
+{% if request.user == car.owner %}
+    <a href="{% url 'car_edit' car.pk %}">Редактировать</a>
+    <form method="post" action="{% url 'car_delete' car.pk %}" style="display:inline">
+        {% csrf_token %}
+        <button type="submit" style="color:red;">Удалить</button>
+    </form>
+{% endif %}
 
 <h2>Комментарии</h2>
 <ul>

@@ -9,4 +9,8 @@ urlpatterns = [
     path('cars/<int:pk>/edit', views.CarUpdateView.as_view(), name='car_edit'),
     path('cars/<int:pk>/delete', views.CarDeleteView.as_view(), name='car_delete'),
     path('register/', views.RegisterView.as_view(), name='register'),
+    # API маршруты
+    path('api/cars/', views.CarListCreateAPIView.as_view(), name='api_car_list'),
+    path('api/cars/<int:pk>/', views.CarDetailAPIView.as_view(), name='api_car_detail'),
+    path('api/cars/<int:pk>/comments/', views.CarCommentAPIView.as_view(), name='api_car_comment')
 ]

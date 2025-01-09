@@ -5,7 +5,7 @@
 <ul>
     {% for car in cars %}
         <li>
-            <a href="{% url 'car_detail' car.pk %}">{{ car.make }} {{ car.model }} ({{ car.year }})</a>
+            <a href="{% url 'car_detail' car.pk %}">{{ car.make }} {{ car.model }} ({{ car.year|default:"Год не указан" }})</a>
         </li>
     {% endfor %}
 </ul>
