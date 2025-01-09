@@ -19,7 +19,7 @@ class Car(models.Model):
         default=None,
         null=True,
         blank=True,
-        validators=[MinValueValidator(1960), max_value_current_year],
+        validators=[MinValueValidator(1960), max_value_current_year],  # в этом поле нужен только год, поэтому без DataField
         verbose_name='Год выпуска'
     )
     description = models.TextField(verbose_name='Описание')

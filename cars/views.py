@@ -16,13 +16,14 @@ from .models import Car, Comment
 from .forms import CommentForm
 
 
-# Create your views here.
+# представление списка машин
 class CarListView(ListView):
     model = Car
     template_name = 'car_list.html'
     context_object_name = 'cars'
 
 
+# представление конкретной машины
 class CarDetailView(DetailView):
     model = Car
     template_name = 'cars/car_detail.html'
@@ -32,6 +33,7 @@ class CarDetailView(DetailView):
         context['comment_form'] = CommentForm()
         return context
 
+    # метод для отправки комментариев
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = CommentForm(request.POST)
@@ -44,6 +46,7 @@ class CarDetailView(DetailView):
         return self.get(request, *args, **kwargs)
 
 
+# форма для добавления новых машин
 class CarCreateView(LoginRequiredMixin, CreateView):
     model = Car
     template_name = 'cars/car_form.html'
@@ -55,6 +58,7 @@ class CarCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+# форма для редактирования машины
 class CarUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Car
     template_name = 'cars/car_form.html'
@@ -66,9 +70,9 @@ class CarUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return self.request.user == car.owner
 
 
+# удаление машины
 class CarDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Car
-    template_name = 'cars/car_confirm_delete.html'
     success_url = reverse_lazy('car_list')
 
     def test_func(self):
@@ -76,6 +80,7 @@ class CarDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return self.request.user == car.owner
 
 
+# форма регистрации
 class RegisterView(CreateView):
     template_name = 'registration/register.html'
     form_class = UserCreationForm
@@ -86,6 +91,7 @@ class RegisterView(CreateView):
         return response
 
 
+# представление для отображения списка автомобилей и добавления машины через API
 class CarListCreateAPIView(generics.ListCreateAPIView):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
@@ -95,6 +101,7 @@ class CarListCreateAPIView(generics.ListCreateAPIView):
         serializer.save(owner=self.request.user)
 
 
+# представление для получения, обновления и удаления конкретного автомобиля
 class CarDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
@@ -111,6 +118,7 @@ class CarDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
         instance.delete()
 
 
+# представление для получения и добавления комментариев к определенному автомобилю
 class CarCommentAPIView(APIView):
     def get(self, request, pk):
         comments = Comment.objects.filter(car_id=pk)
@@ -125,5 +133,6 @@ class CarCommentAPIView(APIView):
         return Response(serializer.errors, status=400)
 
 
+# представление для отображения API документации
 def api_info_view(request):
     return render(request, 'cars/api_info.html')
