@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>API</title>
+</head>
+<body>
+    <h1>API документация</h1>
+
+    <h2>API эндпоинты</h2>
+    <ul>
+        <li><strong>GET /api/cars/</strong> - получение списка автомобилей.</li>
+        <li><strong>GET /api/cars/&lt;id&gt;/</strong> - получение информации о конкретном автомобиле.</li>
+        <li><strong>POST /api/cars/</strong> - создание нового автомобиля.</li>
+        <li><strong>PUT /api/cars/&lt;id&gt;/</strong> - обновление информации о автомобиле. Нужно быть автором записи об автомобиле.</li>
+        <li><strong>DELETE /api/cars/&lt;id&gt;/</strong> - удаление автомобиля. Нужно быть автором записи об автомобиле.</li>
+        <li><strong>GET /api/cars/&lt;id&gt;/comments/</strong> - получение комментариев к автомобилю.</li>
+        <li><strong>POST /api/cars/&lt;id&gt;/comments/</strong> - добавление нового комментария к автомобилю. Требуется авторизация.</li>
+    </ul>
+
+    <h2>Как получить токен</h2>
+    <p>Чтобы использовать API, вам нужен токен аутентификации. Следуйте следующим шагам, чтобы получить токен:</p>
+    <ol>
+        <li>Зарегистрируйтесь или зайдите в свой аккаунт.</li>
+        <li>Отправьте POST-запрос на адрес <code>/api/token/</code> со своим логином и паролем:</li>
+        <pre>
+curl -X POST http://127.0.0.1:8000/api/token/ \
+-H "Content-Type: application/json" \
+-d '{"username": "Ваш_логин", "password": "Ваш_пароль"}'
+        </pre>
+        <li>Вы получите токен в ответе. Используйте этот токен в заголовке <code>Authorization</code> при отправке запросов к API:</li>
+        <pre>
+-H "Authorization: Token ваш_токен"
+        </pre>
+    </ol>
+
+    <p><a href="/">На главную</a></p>
+</body>
+</html>

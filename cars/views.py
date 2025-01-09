@@ -1,13 +1,15 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate
 from django.core.exceptions import PermissionDenied
 
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.authtoken.models import Token
 
 from .serializers import CarSerializer, CommentSerializer
 from .models import Car, Comment
@@ -122,3 +124,6 @@ class CarCommentAPIView(APIView):
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
 
+
+def api_info_view(request):
+    return render(request, 'cars/api_info.html')
